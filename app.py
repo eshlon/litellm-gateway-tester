@@ -140,13 +140,15 @@ with st.sidebar:
         "Gateway URL",
         placeholder="https://your-litellm-gateway.example.com",
         help="Base URL of your LiteLLM proxy (e.g. https://proxy.example.com). `/v1` is appended automatically.",
+        key="inp_gateway_url",
     )
 
     virtual_key = st.text_input(
         "Virtual Key",
         type="password",
         placeholder="sk-...",
-        help="Your LiteLLM virtual key",
+        help="Your LiteLLM virtual key — never stored or logged",
+        key="inp_virtual_key",
     )
 
     st.divider()
@@ -157,7 +159,8 @@ with st.sidebar:
     clear_btn = col2.button("🗑️ Clear",         use_container_width=True)
 
     if clear_btn:
-        for k in ["models", "selected_models", "results", "gateway_url"]:
+        for k in ["models", "selected_models", "results",
+                  "inp_gateway_url", "inp_virtual_key"]:
             st.session_state.pop(k, None)
         st.rerun()
 
@@ -170,7 +173,6 @@ with st.sidebar:
             st.session_state.pop("models", None)
         else:
             st.session_state["models"] = ids
-            st.session_state["gateway_url"] = gateway_url
             st.success(f"✅ Found **{len(ids)}** model(s)")
 
     # Model selector (shown once models are loaded)
@@ -209,6 +211,14 @@ with st.sidebar:
         type="primary",
         use_container_width=True,
         disabled=not (ready and st.session_state.get("selected_models")),
+    )
+
+    st.divider()
+    st.caption(
+        "🔒 **Privacy:** Your gateway URL and virtual key are held only in "
+        "your browser's session memory. They are never written to disk, "
+        "never logged, and only sent to your own gateway. "
+        "Closing the tab erases them instantly."
     )
 
 # ── Main area ─────────────────────────────────────────────────────────────────
