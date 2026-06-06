@@ -1,77 +1,93 @@
 # 🔬 LiteLLM Gateway Tester
 
-A lightweight **Streamlit** app to smoke-test any [LiteLLM](https://github.com/BerriAI/litellm)-compatible proxy gateway.  
-Enter your gateway URL and virtual key, pick models, and instantly benchmark them.
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/deploy?repository=eshlon/litellm-gateway-tester)
 
-![screenshot placeholder](https://placehold.co/900x500?text=LiteLLM+Gateway+Tester)
+A lightweight **Streamlit** app to smoke-test any [LiteLLM](https://github.com/BerriAI/litellm)-compatible proxy gateway.  
+Enter your gateway URL and virtual key, pick models, and instantly benchmark them — no code changes needed.
 
 ---
 
-## Features
+## ✨ Features
 
 | | |
 |---|---|
-| 🔍 **Model discovery** | Fetches all models available to your virtual key via `GET /v1/models` |
-| 📥 **Basic completion** | Measures end-to-end latency + prompt / completion / total token counts |
-| 🌊 **Streaming** | Measures time-to-first-token (TTFT), total stream duration, and chunk count |
-| 📊 **Summary table** | Pass/fail per model+test with all metrics in one view |
-| 🔒 **No secrets stored** | Nothing written to disk; credentials live only in your browser session |
+| 🔍 **Model discovery** | Auto-fetches all models available to your virtual key via `GET /v1/models` |
+| 📥 **Basic completion** | End-to-end latency + prompt / completion / total token counts |
+| 🌊 **Streaming** | Time-to-first-token (TTFT), total stream duration, chunk count |
+| 📊 **Summary table** | Pass / fail per model + test with all metrics in one view |
+| 🔒 **Nothing stored** | Credentials live only in your browser session; nothing written to disk |
 
 ---
 
-## Quick Start
+## 🚀 Run locally
 
 ```bash
-# 1. Install dependencies
 pip install streamlit openai pandas
-
-# 2. Run
 streamlit run app.py
 ```
 
-Then open [http://localhost:8501](http://localhost:8501) in your browser.
+Then open [http://localhost:8501](http://localhost:8501).
 
 ---
 
-## Usage
+## ☁️ Deploy to Streamlit Community Cloud
+
+1. Fork this repo
+2. Go to [share.streamlit.io](https://share.streamlit.io) → **New app**
+3. Select your fork, branch `main`, file `app.py`
+4. Click **Deploy**
+
+> **Note:** Your gateway URL and virtual key are entered at runtime in the sidebar — they are never stored or logged anywhere.
+
+---
+
+## 🛠️ Usage
 
 1. **Gateway URL** — base URL of your LiteLLM proxy, e.g. `https://proxy.example.com`  
-   (`/v1` is appended automatically)
-2. **Virtual Key** — your `sk-...` LiteLLM virtual key
+   (`/v1` is appended automatically if not present)
+2. **Virtual Key** — your `sk-...` LiteLLM virtual key (masked input)
 3. Click **🔄 Fetch Models** to discover available models
 4. Select which models to test
-5. Optionally customise the test prompt
+5. Edit the test prompt if needed
 6. Click **▶ Run Tests**
 
 ---
 
-## What gets tested
+## 📐 What gets tested
 
-For every selected model the app runs two requests:
+For every selected model the app runs **two requests**:
 
-### Basic (non-streaming)
+### 📥 Basic (non-streaming)
 ```
-POST /v1/chat/completions
-{"stream": false}
+POST /v1/chat/completions   {"stream": false}
 ```
-Reports: **latency (ms)**, **prompt tokens**, **completion tokens**, **total tokens**, **response text**
+→ **Latency (ms)** · **Prompt tokens** · **Completion tokens** · **Total tokens** · **Response text**
 
-### Streaming
+### 🌊 Streaming
 ```
-POST /v1/chat/completions
-{"stream": true}
+POST /v1/chat/completions   {"stream": true}
 ```
-Reports: **TTFT (ms)**, **total time (ms)**, **chunk count**, **full assembled response**
+→ **TTFT (ms)** · **Total time (ms)** · **Chunk count** · **Full assembled response**
 
 ---
 
-## Requirements
+## 📦 Requirements
 
-| Package | Version |
-|---|---|
-| `streamlit` | ≥ 1.30.0 |
-| `openai` | ≥ 2.0.0 |
-| `pandas` | ≥ 2.0.0 |
+```
+streamlit>=1.30.0
+openai>=2.0.0
+pandas>=2.0.0
+```
+
+---
+
+## 🤝 Compatible with
+
+Any gateway that speaks the OpenAI API format, including:
+- [LiteLLM Proxy](https://docs.litellm.ai/docs/proxy/quick_start)
+- [OpenRouter](https://openrouter.ai)
+- [Helicone](https://helicone.ai)
+- Self-hosted LiteLLM on Kubernetes / Docker
 
 ---
 

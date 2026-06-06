@@ -127,7 +127,10 @@ st.set_page_config(
 )
 
 st.title("🔬 LiteLLM Gateway Tester")
-st.caption("Test any LiteLLM-compatible gateway — latency, streaming TTFT, token usage")
+st.caption(
+    "Benchmark any LiteLLM-compatible proxy — latency · streaming TTFT · token usage  "
+    "· [GitHub](https://github.com/eshlon/litellm-gateway-tester)"
+)
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 with st.sidebar:
